@@ -42,12 +42,16 @@ public final class CashPay {
     }
 
     static void build(CashPayBuilder CashPayBuilder) {
+try {
+    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(CASHPAY_URL));
+    intent.putExtra("inputPhone", CashPayBuilder.getShortcode());
+    intent.putExtra("inputAmount", CashPayBuilder.getAmount());
+    intent.putExtra("edNote", CashPayBuilder.getEdNote());
 
-        Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(CASHPAY_URL));
-        intent.putExtra("inputPhone",CashPayBuilder.getShortcode());
-        intent.putExtra("inputAmount",CashPayBuilder.getAmount());
-        intent.putExtra("edNote",CashPayBuilder.getEdNote());
+    CashPayBuilder.getActivity().startActivityForResult(intent, CASHPAY_REQUEST_CODE);
+}catch (Exception e){
+    CashPayBuilder.getActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.tamkeen.sms" )));
 
-        CashPayBuilder.getActivity().startActivityForResult(intent,CASHPAY_REQUEST_CODE);
+}
     }
 }
