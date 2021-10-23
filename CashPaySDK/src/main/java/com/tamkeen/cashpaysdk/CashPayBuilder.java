@@ -31,7 +31,7 @@ public class CashPayBuilder {
 
     public CashPayBuilder(Activity activity) {
 
-        this.activity = (Activity) activity.getApplicationContext();
+        this.activity =  activity;
     }
 
 
