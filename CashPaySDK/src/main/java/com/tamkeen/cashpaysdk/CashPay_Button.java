@@ -4,24 +4,27 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+
+import androidx.annotation.Nullable;
 
 
 @SuppressLint("AppCompatCustomView")
-public class CashPay_Button extends Button {
+public class CashPay_Button extends ImageButton {
     public CashPay_Button(final Context context) {
         super(context);
-        this.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent();
-                context.startActivity(intent);
-
-            }
-        });
+        Drawable image=(Drawable)getResources().getDrawable(R.drawable.shap_cash);
+setImageDrawable(image);
+setBackgroundColor(Color.parseColor("#006666"));
+       // setImageDrawable(R.drawable.shap_cash);
 
     }
+
+
 
 
     public  void  Runner(Activity activity){
