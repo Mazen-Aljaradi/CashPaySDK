@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCaller;
+
 import static com.tamkeen.cashpaysdk.CashPayBuilder.CASHPAY_REQUEST_CODE;
 
 public final class CashPay {
@@ -43,12 +46,23 @@ public final class CashPay {
 
     static void build(CashPayBuilder CashPayBuilder) {
 try {
-    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(CASHPAY_URL));
-    intent.putExtra("inputPhone", CashPayBuilder.getShortcode());
-    intent.putExtra("inputAmount", CashPayBuilder.getAmount());
-    intent.putExtra("edNote", CashPayBuilder.getEdNote());
+    final BetterActivityResult<Intent, ActivityResult> activityLauncher = BetterActivityResult.registerActivityForResult((ActivityResultCaller) CashPayBuilder.getActivity());
 
-    CashPayBuilder.getActivity().startActivityForResult(intent, CASHPAY_REQUEST_CODE);
+    Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(CASHPAY_URL));
+    intent.putExtra("inputPhone",CashPayBuilder.getShortcode());
+    intent.putExtra("inputAmount",CashPayBuilder.getAmount());
+    intent.putExtra("edNote",CashPayBuilder.getEdNote());
+    activityLauncher.launch(intent, new BetterActivityResult.OnActivityResult<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == CASHPAY_REQUEST_CODE) {
+                // There are no request codes
+                Intent data = result.getData();
+                System.out.println(result.getData());
+
+            }
+        }
+    });
 }catch (Exception e){
     CashPayBuilder.getActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.tamkeen.sms" )));
 
